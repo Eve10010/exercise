@@ -1,0 +1,35 @@
+首先提取了正常情况下流表内容，包括以下几种情况：
+
+1.在 Host2上启动一个 http 服务，Host23上 ping Host2
+2.平静状态
+3.pingall状态
+4.指定tcp测试iperf
+5.两个节点之间用指定款单 udp 进行测试 iperfudp
+再提取模拟泛洪时的流表信息
+
+流表特征提取：
+cookie
+duration
+table
+n_packets
+n_bytes
+idle_timeout
+priority
+in_port
+dl_src
+dl_dst
+nw_src
+nw_dst
+tc_src
+tc_dst
+tcp_flags
+actions
+
+数据处理步骤:
+1.不完整的特征设为零
+2.非数字变为数字表示
+3.分条提取成一个矩阵，每个矩阵大小设为17*n
+4.去掉多余内容
+(5)强化学习
+(6)学习结果放入floodlight，下发流表控制，使用sflow-rt进行效果观察：0代表正常，1代表检测到攻击，下发流表控制流量
+ 

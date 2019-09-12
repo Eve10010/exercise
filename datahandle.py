@@ -7,9 +7,13 @@ Created on Sun Aug  4 11:44:44 2019
 """
 import numpy as np
 import unicodedata  # 处理ASCii码的包
-
-file=open("data_flood.txt","r")
+#import pickle
+import os
+import pickle
+import math
 lines=[]
+os.system('sudo ovs-ofctl dump-flows -O Openflow13 s1 >& temp_data.txt')
+file=open("temp_data.txt","r")
 for i in file:
     lines.append(str(i))
 file.close()
@@ -37,6 +41,8 @@ for j in range(length_lines):
 length_new_delete=len(new_delete)
 
 final_list=[]
+hash0=[]
+hash1=[]
 
 for m in range(length_new_delete):
     length_raw=len(new_delete[m])
@@ -110,9 +116,21 @@ for a in range(17):
     for b in range(length_new_delete):
         if name_list[a] in final_list[b].keys():
             mymat[a][b]=getnum(final_list[b][name_list[a]])
+            if abs(mymat[a][b])>1000:
+                mymat[a][b]=math.log(10,abs(mymat[a][b]))
         else:
             pass
+
+
+'''for c in range(17):
+    for d in range(length_new_delete):
+        mymat[c][d]=(mymat[c][d]-min(mymat[:,d]))/(max(mymat[:,d])-min(mymat[:,d]))'''
         
+fs = open('mymat.pkl','wb')
+
+pickle.dump(mymat,fs)       
+
+fs.close()
 
    
 
